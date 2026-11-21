@@ -33,7 +33,12 @@ def main() -> int:
     out_dir = Path("/output")
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / "entry.txt"
-    out_path.write_bytes((POEM + "\n").encode("utf-8"))
+    payload = (POEM + "\n").encode("utf-8")
+    out_path.write_bytes(payload)
+    if out_path.read_bytes() != payload:
+        print(f"ERROR: verification failed: bytes read back from {out_path} "
+              "differ from bytes written.")
+        return 1
     print(f"OK: wrote {n} code points to {out_path}")
     return 0
 
